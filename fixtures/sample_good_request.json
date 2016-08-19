@@ -1,0 +1,8 @@
+{
+	"loginurl": "https://login.mycfplatform.comcast.net",
+	"apiurl": "https://mycfplatform.comcast.net/v2",
+	"org": "MY-ORG",
+	"space": "my-space",
+  "appname": "noop-application-generic#1.0.0.81-f4e05e",
+	"scalefactor": 1.5
+}

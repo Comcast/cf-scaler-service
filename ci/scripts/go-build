@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e -x
+
+export GOPATH=$PWD/go_workspace
+export PATH=$GOPATH/bin:$PATH
+
+VERSION="$(cat version/number)"
+OUTPUT="$PWD/resource-cfscaler"
+
+go get github.com/tools/godep
+
+pushd ${GOPATH}/src/github.com/comcast/cf-scaler-service
+  godep go build -o cfscalerservice server/main.go
+popd

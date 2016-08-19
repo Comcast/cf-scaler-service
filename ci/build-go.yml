@@ -1,0 +1,12 @@
+---
+platform: linux
+
+image: "docker:///golang#1.6.2-onbuild"
+
+inputs:
+  - name: cf-scaler-service
+    path: go_workspace/src/github.com/comcast/cf-scaler-service
+  - name: version
+
+run:
+  path: go_workspace/src/github.com/comcast/cf-scaler-service/ci/scripts/go-build

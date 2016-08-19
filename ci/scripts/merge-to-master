@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -e -x
+
+export PATH=$GOPATH/bin:$PATH
+
+VERSION=$(cat ./version/number)
+if [ -z "$VERSION" ]; then
+  echo "missing version number"
+  exit 1
+fi
+
+DEVELOP=$PWD/cf-scaler-service
+
+pushd $DEVELOP
+  SHA="$(git rev-parse HEAD)"
+popd
+
+git clone ./cf-scaler-service-master ./cf-scaler-service-merged
+
+cd cf-scaler-service-merged
+
+git remote add local $DEVELOP
+
+git fetch local
+
+git config --global user.email "ci@localhost"
+git config --global user.name "CI Bot"
+
+git merge --no-edit --no-ff -m "Create release ${VERSION}" $SHA

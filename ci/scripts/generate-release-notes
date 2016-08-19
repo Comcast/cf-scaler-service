@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -e
+
+NOTES=$PWD/release-notes
+
+version=$(cat version/number)
+
+echo v${version} > $NOTES/release-name
+
+cat > $NOTES/notes.md <<EOF
+See v${version} release notes
+EOF
+
+sha=$(git -C cf-scaler-service-merged rev-parse HEAD)
+echo $sha > $NOTES/commitish

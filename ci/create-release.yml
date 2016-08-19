@@ -1,0 +1,15 @@
+---
+platform: linux
+
+image: "docker:///golang#1.6.2-onbuild"
+
+inputs:
+  - name: cf-scaler-service
+  - name: version
+  - name: cf-scaler-service-master
+
+outputs:
+  - name: cf-scaler-service-merged
+
+run:
+  path: cf-scaler-service/ci/scripts/merge-to-master

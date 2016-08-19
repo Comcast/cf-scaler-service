@@ -1,0 +1,4 @@
+---
+instances: 2
+buildpack: https://github.com/cloudfoundry/binary-buildpack.git
+command: ./cfscalerservice

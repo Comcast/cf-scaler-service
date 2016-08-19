@@ -1,0 +1,32 @@
+{
+	"ImportPath": "github.comcast.com/nbeenh00/cf-scaler-service",
+	"GoVersion": "go1.5.2",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/codegangsta/negroni",
+			"Comment": "v0.1-70-gc7477ad",
+			"Rev": "c7477ad8e330bef55bf1ebe300cf8aa67c492d1b"
+		},
+		{
+			"ImportPath": "github.com/onsi/ginkgo",
+			"Comment": "v1.2.0-12-gcd0c926",
+			"Rev": "cd0c92610a042acf1e5aa5a280ab69ecf0ab6d9b"
+		},
+		{
+			"ImportPath": "github.com/onsi/gomega",
+			"Comment": "v1.0-53-g1d25b76",
+			"Rev": "1d25b76be4fe52267f785ebe434ae816489e3bfa"
+		},
+		{
+			"ImportPath": "github.com/unrolled/render",
+			"Rev": "40a2dfa24398d37b4a14938442a0f4fe4307b929"
+		},
+		{
+			"ImportPath": "github.com/xchapter7x/cloudcontroller-client",
+			"Rev": "27896811a22849ade4d3b738fd2d41e8a2b61407"
+		}
+	]
+}

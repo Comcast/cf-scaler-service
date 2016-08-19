@@ -1,0 +1,100 @@
+jobs:
+- name: major
+  serial_groups: [version]
+  plan:
+  - get: version
+    params: {bump: major, pre: rc}
+  - put: version
+    params: {file: version/number}
+
+- name: minor
+  serial_groups: [version]
+  plan:
+  - get: version
+    params: {bump: minor, pre: rc}
+  - put: version
+    params: {file: version/number}
+
+- name: patch
+  serial_groups: [version]
+  plan:
+  - get: version
+    params: {bump: patch, pre: rc}
+    passed: [create-release]
+    trigger: true
+  - put: version
+    params: {file: version/number}
+
+- name: test
+  plan:
+  - get: cf-scaler-service
+    trigger: true
+  - task: test-go
+    file: cf-scaler-service/ci/test-go.yml
+
+- name: build
+  serial_groups: [version]
+  plan:
+    - get: cf-scaler-service
+      passed: [test]
+      trigger: true
+    - get: version
+      params: {pre: rc}
+    - task: build-go
+      file: cf-scaler-service/ci/build-go.yml
+    - put: version
+      params: {file: version/number}
+
+- name: create-release
+  serial_groups: [version]
+  serial: true
+  plan:
+    - get: cf-scaler-service
+      passed: [build]
+    - get: version
+      params: {bump: final}
+      passed: [build]
+    - get: cf-scaler-service-master
+    - task: create-release
+      file: cf-scaler-service/ci/create-release.yml
+    - task: generate-release-notes
+      file: cf-scaler-service/ci/generate-release-notes.yml
+    - put: version
+      params: {file: version/number}
+    - put: cf-scaler-service-master
+      params: {repository: cf-scaler-service-merged}
+    - put: gh-release
+      params:
+        name: release-notes/release-name
+        tag: release-notes/release-name
+        body: release-notes/notes.md
+        commitish: release-notes/commitish
+
+resources:
+- name: cf-scaler-service
+  type: git
+  source:
+    uri: git@github.com:comcast/cf-scaler-service.git
+    branch: develop
+    private_key: {{github_com_key}}
+- name: cf-scaler-service-master
+  type: git
+  source:
+    uri: git@github.com:comcast/cf-scaler-service.git
+    branch: master
+    private_key: {{github_com_key}}
+- name: version
+  type: semver
+  source:
+    initial_version: 0.1.0
+    driver: git
+    uri: git@github.com:comcast/cf-scaler-service.git
+    branch: version
+    file: version
+    private_key: {{github_com_key}}
+- name: gh-release
+  type: github-release
+  source:
+    user: comcast
+    repository: cf-scaler-service
+    access_token: {{github_com_access_token}}
